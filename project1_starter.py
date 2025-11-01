@@ -3,7 +3,7 @@ COMP 163 - Project 1: Character Creator & Saving/Loading
 Name: Joshua Evans
 Date: 10/31/2025
 
-AI Usage: ChatGPT (GPT-5) helped with function logic, formatting, and level 100 transformations.
+AI Usage: ChatGPT (GPT-5) helped with function logic, formatting, and documentation.
 """
 
 # Create a new character
@@ -32,31 +32,29 @@ def create_character(name, character_class):
 def calculate_stats(character_class, level):
     """
     Returns a tuple (strength, magic, health) based on class and level
-    strength = physical damage
-    magic = ki damage
     """
     cls = character_class.lower()
-    if cls == "earthling":
-        strength = 50 + level * 3
-        magic = 50 + level * 3
-        health = 100 + level * 3
-    elif cls == "saiyan":
-        strength = 75 + level * 4
-        magic = 35 + level * 2
-        health = 80 + level * 2
-    elif cls == "namekian":
-        strength = 65 + level * 2
-        magic = 45 + level * 2
-        health = 120 + level * 4
-    elif cls == "frieza":
-        strength = 45 + level * 2
-        magic = 55 + level * 2
-        health = 70 + level * 2
+    if cls == "warrior":
+        strength = 10 + level * 5
+        magic = 2 + level * 1
+        health = 120 + level * 10
+    elif cls == "mage":
+        strength = 3 + level * 1
+        magic = 15 + level * 5
+        health = 80 + level * 5
+    elif cls == "rogue":
+        strength = 7 + level * 3
+        magic = 7 + level * 2
+        health = 90 + level * 6
+    elif cls == "cleric":
+        strength = 6 + level * 2
+        magic = 10 + level * 4
+        health = 100 + level * 8
     else:
-        # Default fallback for unknown class
-        strength = 10 + level * 2
-        magic = 10 + level * 2
-        health = 100 + level * 3
+        # Default fallback
+        strength = 5 + level * 2
+        magic = 5 + level * 2
+        health = 100 + level * 5
     return (strength, magic, health)
 
 
@@ -133,51 +131,27 @@ def display_character(character):
 # Level up a character
 def level_up(character):
     """
-    Increase level by 1, recalc stats, unlock special forms at level 100
+    Increase level by 1, recalc stats
     """
     character["level"] += 1
     character["strength"], character["magic"], character["health"] = calculate_stats(
         character["class"], character["level"]
     )
 
-    if character["level"] == 100:
-        cls = character["class"].lower()
-        if cls == "saiyan":
-            print(f"🔥 {character['name']} has transformed into Super Saiyan!")
-            character["strength"] = int(character["strength"] * 1.5)
-            character["magic"] = int(character["magic"] * 1.5)
-            character["health"] = int(character["health"] * 1.5)
-        elif cls == "frieza":
-            print(f"❄️ {character['name']} has reached Final Form!")
-            character["strength"] = int(character["strength"] * 1.6)
-            character["magic"] = int(character["magic"] * 1.6)
-            character["health"] = int(character["health"] * 1.6)
-        elif cls == "earthling":
-            print(f"💪 {character['name']} has unlocked Ultimate Mode!")
-            character["strength"] = int(character["strength"] * 1.4)
-            character["magic"] = int(character["magic"] * 1.4)
-            character["health"] = int(character["health"] * 1.4)
-        elif cls == "namekian":
-            print(f"🌿 {character['name']} has achieved Power Awakening!")
-            character["strength"] = int(character["strength"] * 1.45)
-            character["magic"] = int(character["magic"] * 1.45)
-            character["health"] = int(character["health"] * 1.45)
-
 
 # Main testing block
 if __name__ == "__main__":
     print("=== CHARACTER CREATOR ===")
-    char = create_character("Goku", "Saiyan")
+    char = create_character("Aria", "Mage")
     display_character(char)
 
     print("\nLeveling up character...")
-    for _ in range(99):
-        level_up(char)
+    level_up(char)
     display_character(char)
 
     print("\nSaving character...")
-    save_character(char, "goku.txt")
+    save_character(char, "aria.txt")
 
     print("\nLoading character...")
-    loaded = load_character("goku.txt")
+    loaded = load_character("aria.txt")
     display_character(loaded)
