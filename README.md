@@ -1,99 +1,120 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/JTXl4WMa)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21184641&assignment_repo_type=AssignmentRepo)
-# COMP 163 - Project 1: Character Creator & Chronicles
-# 🎯 Project Overview
+COMP 163 - Project 1: Simple Character Creator
 
-Build a text-based RPG character creation and story progression system that demonstrates mastery of functions and file I/O operations.
+Overview
 
-# Required Functions 
-Complete these functions in project1_starter.py:
+This project implements a basic role-playing game (RPG) character creation system in Python. It allows users to create new characters, calculate stats based on class and level, level up existing characters, and persist character data to a text file for saving and loading.
 
-create_character(name, character_class) - Create new character
+The goal is to demonstrate fundamental Python concepts, including:
 
-calculate_stats(character_class, level) - Calculate character stats
+Dictionary usage for data structures.
 
-save_character(character, filename) - Save character to file
+Conditional logic (if/elif/else).
 
-load_character(filename) - Load character from file
+Function definition and modular code structure.
 
-display_character(character) - Display character info
+Basic file input/output (I/O) operations.
 
-level_up(character) - Increase character level
+Features
 
-# 🎭 Character Classes
-Implement these character classes with unique stat distributions:
+The script provides the following core functionalities:
 
+create_character(name, character_class): Creates a new Level 1 character dictionary with base stats and 100 Gold.
 
-Warrior: High strength, low magic, high health
+calculate_stats(character_class, level): Determines a character's Strength, Magic, and Health based on their class and current level.
 
-Mage: Low strength, high magic, medium health
+level_up(character): Increments the character's level by 1 and recalculates their stats.
 
-Rogue: Medium strength, medium magic, low health
+save_character(character, filename): Writes the character dictionary data to a specified text file in a clear, readable format.
 
-Cleric: Medium strength, high magic, high health
+load_character(filename): Reads character data from a text file and reconstructs the character dictionary.
 
-# 📁 Required File Format
-Your save_character() function must create files in this exact format:
+display_character(character): Prints a formatted character sheet to the console.
 
-Character Name: [name]
+Usage
 
-Class: [class]
+To use this script:
 
-Level: [level]
+Ensure you have a Python environment ready.
 
-Strength: [strength]
+Run the script directly from your terminal:
 
-Magic: [magic]
-
-Health: [health]
-
-Gold: [gold]
+python character_creator.py
 
 
-# Run specific test file
-python -m pytest tests/test_character_creation.py -v
+The main block (if __name__ == "__main__":) demonstrates the creation, leveling, saving, and loading process:
 
-# Test your main program
-python project1_starter.py
+A character named "Aria" (Mage) is created.
 
-GitHub Testing:
+Aria is leveled up from Level 1 to Level 2.
 
-After pushing your code, check the Actions tab to see automated test results:
+Aria's data is saved to aria.txt.
 
-✅ Green checkmarks = tests passed
-❌ Red X's = tests failed (click to see details)
+The data is loaded back from aria.txt and displayed.
 
-# ⚠️ Important Notes
-Protected Files
+Character Classes and Stat Distribution
 
-DO NOT MODIFY files in the tests/ directory
+The available classes are designed with distinct stat priorities:
 
-DO NOT MODIFY files in the .github/ directory
+Class
 
-Modifying protected files will result in automatic academic integrity violation
+Primary Stat Focus
 
-# AI Usage Policy
+Base Strength (Lvl 1)
 
-✅ Allowed: AI assistance for implementation, debugging, learning
+Base Magic (Lvl 1)
 
-📝 Required: Document AI usage in code comments
+Base Health (Lvl 1)
 
-🎯 Must be able to explain: Every line of code during interview
+Warrior
 
-# 📝 Submission Checklist
+Strength, High Health
 
- All required functions implemented
- 
- Code passes all automated tests
- 
- README updated with your documentation
- 
- Interview scheduled and completed
- 
- AI usage documented in code comments
+18
 
-# 🏆 Grading
+2
 
-Implementation (70%): Function correctness, file operations, error handling
+165
 
-Interview (30%): Code explanation and live coding challenge
+Mage
+
+High Magic, Low Health
+
+3
+
+26
+
+75
+
+Rogue
+
+Balanced Agility/Magic
+
+10
+
+9
+
+96
+
+Cleric
+
+Balanced Health/Magic
+
+8
+
+14
+
+108
+
+Note: The numbers above reflect the initial stat calculation at Level 1 (Base + 1 * multiplier).
+
+Character File Format
+
+Characters are saved in a simple key-value text format, with each property on a new line:
+
+Character Name: Aria
+Class: Mage
+Level: 2
+Strength: 4
+Magic: 32
+Health: 75
+Gold: 100
