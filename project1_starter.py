@@ -3,7 +3,7 @@ COMP 163 - Project 1: Character Creator & Saving/Loading
 Name: Joshua Evans
 Date: 10/31/2025
 
-AI Usage: ChatGPT helped with function logic, formatting, and implementing level 100 forms.
+AI Usage: ChatGPT helped with function logic, formatting, troubleshooting, and implementation for level 100 forms.
 """
 
 # Function to create a new character
@@ -13,28 +13,19 @@ def create_character(name, character_class):
     Returns: dictionary with keys: name, class, level, strength, magic, health, gold
     """
     level = 1
-    # Calculate base stats
+    # Compute stats
     strength, magic, health = calculate_stats(character_class, level)
-    gold = 100  # Base gold
-
-    character = {
+    return {
         "name": name,
         "class": character_class,
-        "level": level,
+        "level": 1,
         "strength": strength,
         "magic": magic,
         "health": health,
-        "gold": gold
+        "gold": 100
     }
 
-    return character
-
-# Function to calculate stats based on class and level
 def calculate_stats(character_class, level):
-    """
-    Calculates base stats based on class and level
-    Returns: tuple of (strength, magic, health)
-    """
     cls = character_class.lower()
     if cls == "earthling":
         strength = 50 + (level * 3)
@@ -53,11 +44,9 @@ def calculate_stats(character_class, level):
         magic = 55 + (level * 2)
         health = 70 + (level * 2)
     else:
-        # default fallback
         strength = 10 + (level * 2)
         magic = 10 + (level * 2)
-        health = 100 + (level * 3)
-
+        health = 100 + (level * 2)
     return (strength, magic, health)
 
 # Function to save a character to a file
