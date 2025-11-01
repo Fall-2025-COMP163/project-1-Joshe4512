@@ -3,7 +3,9 @@ COMP 163 - Project 1: Character Creator & Saving/Loading
 Name: Joshua Evans
 Date: 10/31/2025
 
-AI Usage: ChatGPT (GPT-5) helped with function implementation logic, formatting, and documentation.
+AI Usage: AI helped with the development of the leveling system and the transformations for when characters reach level 100
+AI explained Functions and files to further help development
+AI used CHAT GPT and GOOGLE GEMINI
 """
 
 # Function to create a new character
