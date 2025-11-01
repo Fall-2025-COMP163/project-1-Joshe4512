@@ -1,96 +1,74 @@
 """
 COMP 163 - Project 1: Character Creator & Saving/Loading
-Name: [Joshua Evans]
-Date: [10/20/2025]
+Name: Joshua Evans
+Date: 10/20/2025
 
 AI Usage: AI gave an example on how to code the "Earthling" character class, which helped code the rest of the classes.
-AI helped code the load_character section 
+AI helped code the load_character section.
 AI coded the level 100 forms and stat booster for forms.
+AI helped troubleshoot issues with code and fixed typos and indentation errors.
+"""
 
-def create_character (name , character_class): #
+# ==============================
+# CHARACTER CREATION
+# ==============================
+
+def calculate_stats(character_class, level):
+    """Calculates stats based on level and class and returns a tuple of all stats."""
     if character_class == "Earthling":
-        return{"Physical_Damage": 50, "Ki_Damage": 50, "Health": 100, "Speed": 100}
+        Physical_Damage = 50 + (level * 3)
+        Ki_Damage = 50 + (level * 3)
+        Health = 100 + (level * 3)
+        Speed = 100 + (level * 3)
+
     elif character_class == "Saiyan":
-        return{"Physical_Damage": 75, "Ki_Damage": 35, "Health": 80, "Speed": 150 }
+        Physical_Damage = 75 + (level * 4)
+        Ki_Damage = 35 + (level * 2)
+        Health = 80 + (level * 2)
+        Speed = 150 + (level * 3)
+
     elif character_class == "Namekian":
-        return{"Physical_Damage": 65, "Ki_Damage": 45, "Health": 120, "Speed": 80}
+        Physical_Damage = 65 + (level * 2)
+        Ki_Damage = 45 + (level * 2)
+        Health = 125 + (level * 4)
+        Speed = 80 + (level * 2)
+
     elif character_class == "Frieza":
-        return{"Physical_Damage": 45, "Ki_Damage": 55, "Health": 70, "Speed": 200}
-    else: return{"Pick a race: Earthling, Saiyan, Namekian, Frieza"}
-    def create_character(name, character_class):
-        stats = calculate_stats(charcacter_class)
-        character = {
-        "name": name,
-        "class": character_class,
-        "level": 1,
-        "Physical_Damage": stats[Physical_Damage"],
-        "Ki_Damage": stats["Ki_Damage"],
-        "Health": stats["Health"],
-        "Speed": stats["speed"],
-        "zeni": 100
-    }
-    return character
-    """
-    Creates a new character dictionary with calculated stats
-    Returns: dictionary with keys: name, class, level, strength, magic, health, gold
-    
-    Example:
-    char = create_character("Aria", "Mage")
-    # Should return: {"name": "Aria", "class": "Mage", "level": 1, "strength": 5, "magic": 15, "health": 80, "gold": 100}
-    """
-    # TODO: Implement this function
-    # Remember to use calculate_stats() function for stat calculation
-    pass
+        Physical_Damage = 45 + (level * 2)
+        Ki_Damage = 55 + (level * 2)
+        Health = 70 + (level * 2)
+        Speed = 100 + (level * 4)
 
-def calculate_stats(character_class, level): #Calculates stats based on level and class and returns a tuple of all stats 
-    if character_class == "Earthling": 
-    Physical_Damage = 50 + (level * 3)
-    Ki_Damage = 50 + (level * 3)
-    Health = 100 + (level * 3)
-    Speed = 100 + (level * 3)
-    
-    elif character_class == "Saiyan":
-    Physical_Damage = 75 + (level * 4)
-    Ki_Damage = 35 + (level * 2)
-    Health = 80 + (level * 2)
-    Speed = 150 + (level * 3)
-
-    elif character_class == "Namekian":
-    Physical_Damage = 65 + (level * 2)
-    Ki_Damage = 45 + (level * 2)
-    Health = 125 + (level * 4)
-    Speed = 80 + (level * 2)
-
-    elif character_class == "Freiza":
-    Physical_Damage = 45 + (level * 2)
-    Ki_Damage = 55 + (level * 2)
-    Health = 70 + (level * 2)
-    Speed = 100 + (level * 4)
-    
-    else:print("please choose a class: Earthling, Saiyan, Namekian, or Frieza")
+    else:
+        print("Please choose a valid class: Earthling, Saiyan, Namekian, or Frieza.")
+        Physical_Damage = Ki_Damage = Health = Speed = 0
 
     return (Physical_Damage, Ki_Damage, Health, Speed)
-    
-    
-    """
-    Calculates base stats based on class and level
-    Returns: tuple of (strength, magic, health)
-    
-    Design your own formulas! Ideas:
-    - Warriors: High strength, low magic, high health
-    - Mages: Low strength, high magic, medium health  
-    - Rogues: Medium strength, medium magic, low health
-    - Clerics: Medium strength, high magic, high health
-    """
-    # TODO: Implement this function
-    # Return a tuple: (strength, magic, health)
-    pass
+
+
+def create_character(name, character_class):
+    """Creates a new character dictionary with calculated stats."""
+    level = 1
+    stats = calculate_stats(character_class, level)
+    character = {
+        "name": name,
+        "class": character_class,
+        "level": level,
+        "physical_damage": stats[0],
+        "ki_damage": stats[1],
+        "health": stats[2],
+        "speed": stats[3],
+        "gold": 100,
+        "form": "Base"
+    }
+    return character
+
+# ==============================
+# FILE OPERATIONS
+# ==============================
 
 def save_character(character, filename):
-    """
-    Saves character to a text file in a specific format
-    Returns: True if successful
-    """
+    """Saves character to a text file in a specific format."""
     with open(filename, "w") as file:
         file.write("Character Name: " + character["name"] + "\n")
         file.write("Class: " + character["class"] + "\n")
@@ -100,31 +78,12 @@ def save_character(character, filename):
         file.write("Health: " + str(character["health"]) + "\n")
         file.write("Speed: " + str(character["speed"]) + "\n")
         file.write("Gold: " + str(character["gold"]) + "\n")
+        file.write("Form: " + character["form"] + "\n")
     return True
 
 
-
-    #Saves character to text file in specific format
-    #Returns: True if successful, False if an error occurred
-    
-    Required file format:
-    Character Name: [name]
-    Class: [class]
-    Level: [level]
-    Strength: [strength]
-    Magic: [magic]
-    Health: [health]
-    Gold: [gold]
-    """
-    # TODO: Implement this function
-    # Remember to handle file errors gracefully
-    pass
-
 def load_character(filename):
-    """
-    Loads character from text file
-    Returns: character dictionary
-    """
+    """Loads character from text file and returns a character dictionary."""
     character = {}
     with open(filename, "r") as file:
         for line in file:
@@ -148,10 +107,16 @@ def load_character(filename):
                     character["speed"] = int(value)
                 elif key == "Gold":
                     character["gold"] = int(value)
+                elif key == "Form":
+                    character["form"] = value
     return character
 
+# ==============================
+# DISPLAY AND LEVEL UP
+# ==============================
 
 def display_character(character):
+    """Prints formatted character sheet."""
     print("=== CHARACTER SHEET ===")
     print("Name:", character["name"])
     print("Class:", character["class"])
@@ -161,66 +126,54 @@ def display_character(character):
     print("Health:", character["health"])
     print("Speed:", character["speed"])
     print("Gold:", character["gold"])
+    print("Form:", character["form"])
 
-    """
-    Prints formatted character sheet
-    Returns: None (prints to console)
-    
-    Example output:
-    === CHARACTER SHEET ===
-    Name: Aria
-    Class: Mage
-    Level: 1
-    Strength: 5
-    Magic: 15
-    Health: 80
-    Gold: 100
-    """
-    # TODO: Implement this function
-    pass
+
+def boost_stats(character, multiplier):
+    """Boosts stats when transformation unlocks."""
+    character["physical_damage"] = int(character["physical_damage"] * multiplier)
+    character["ki_damage"] = int(character["ki_damage"] * multiplier)
+    character["health"] = int(character["health"] * multiplier)
+    character["speed"] = int(character["speed"] * multiplier)
+
 
 def level_up(character):
+    """Increases level and recalculates stats, unlocking transformations at 100."""
     character["level"] = character["level"] + 1
-    character["physical_damage"] = character["physical_damage"] + 5
-    character["ki_damage"] = character["ki_damage"] + 5
-    character["health"] = character["health"] + 10
-    character["speed"] = character["speed"] + 3
+    character["physical_damage"] += 5
+    character["ki_damage"] += 5
+    character["health"] += 10
+    character["speed"] += 3
     print(character["name"], "leveled up to Level", character["level"], "!")
+
+    # Unlock special transformations
     if character["level"] == 100:
-        if character["class"].lower() == "saiyan":
+        race = character["class"].lower()
+        if race == "saiyan":
             character["form"] = "Super Saiyan"
             boost_stats(character, 1.5)
-            print("🔥", ["name"], "has transformed into a Super Saiyan, the legend lives on!")
-        elif character["class"].lower() == "frieza":
+            print("🔥", character["name"], "has transformed into a Super Saiyan!")
+        elif race == "frieza":
             character["form"] = "Final Form"
             boost_stats(character, 1.6)
             print("❄️", character["name"], "has reached their Final Form!")
-        elif character["class"].lower() == "earthling":
+        elif race == "earthling":
             character["form"] = "Ultimate Mode"
             boost_stats(character, 1.4)
             print("💪", character["name"], "has unlocked Ultimate Mode!")
-        elif character["class"].lower() == "namekian":
+        elif race == "namekian":
             character["form"] = "Power Awakening"
             boost_stats(character, 1.45)
             print("🌿", character["name"], "has achieved Power Awakening!")
 
-    def boost_stats(character, multiplier):
-        character["physical_damage"] = int(character["physical_damage"] * multiplier)
-        character["ki_damage"] = int(character["ki_damage"] * multiplier)
-        character["health"] = int(character["health"] * multiplier)
-        character["speed"] = int(character["speed"] * multiplier)
+# ==============================
+# TEST AREA
+# ==============================
 
-
-
-    pass
-
-# Main program area (optional - for testing your functions)
 if __name__ == "__main__":
-    print("=== CHARACTER CREATOR ===")
-    print("Test your functions here!")
-    
-    # Example usage:
-    # char = create_character("TestHero", "Warrior")
-    # display_character(char)
-    # save_character(char, "my_character.txt")
-    # loaded = load_character("my_character.txt")
+    char = create_character("Karo", "Saiyan")
+    display_character(char)
+    level_up(char)
+    save_character(char, "test_char.txt")
+    loaded = load_character("test_char.txt")
+    display_character(loaded)
