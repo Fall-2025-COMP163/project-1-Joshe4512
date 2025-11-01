@@ -3,8 +3,9 @@ COMP 163 - Project 1: Character Creator & Saving/Loading
 Name: Joshua Evans
 Date: 10/31/2025
 
-AI Usage: ChatGPT (GPT-5) helped with function logic, formatting, and documentation.
+AI Usage: ChatGPT (GPT-5) and Google Gemini helped with function logic, formatting, and documentation.
 """
+
 
 # Create a new character
 def create_character(name, character_class):
@@ -32,16 +33,20 @@ def create_character(name, character_class):
 def calculate_stats(character_class, level):
     """
     Returns a tuple (strength, magic, health) based on class and level
+    
+    Stats updated to ensure Warrior and Mage do not produce identical level 1 values.
     """
     cls = character_class.lower()
     if cls == "warrior":
-        strength = 10 + level * 5
-        magic = 2 + level * 1
-        health = 120 + level * 10
+        # Focused on Strength and Health
+        strength = 12 + level * 6
+        magic = 1 + level * 1
+        health = 150 + level * 15
     elif cls == "mage":
-        strength = 3 + level * 1
-        magic = 15 + level * 5
-        health = 80 + level * 5
+        # Focused on Magic and lower Health
+        strength = 2 + level * 1
+        magic = 20 + level * 6
+        health = 70 + level * 5
     elif cls == "rogue":
         strength = 7 + level * 3
         magic = 7 + level * 2
@@ -63,47 +68,54 @@ def save_character(character, filename):
     """
     Saves character to file in proper format.
     Returns True if successful, False if file path invalid.
+    
+    Note: Directory checking logic removed due to 'os' module restriction.
     """
     if filename == "":
         return False
-
-    import os
-    directory = os.path.dirname(filename)
-    if directory != "" and not os.path.exists(directory):
+    
+    try:
+        # Use 'with open' to ensure the file is closed automatically
+        with open(filename, "w") as file:
+            file.write(f"Character Name: {character['name']}\n")
+            file.write(f"Class: {character['class']}\n")
+            file.write(f"Level: {character['level']}\n")
+            file.write(f"Strength: {character['strength']}\n")
+            file.write(f"Magic: {character['magic']}\n")
+            file.write(f"Health: {character['health']}\n")
+            file.write(f"Gold: {character['gold']}\n")
+        return True
+    except IOError:
+        # Catch FileNotFoundError or other path/permission issues
         return False
-
-    file = open(filename, "w")
-    file.write(f"Character Name: {character['name']}\n")
-    file.write(f"Class: {character['class']}\n")
-    file.write(f"Level: {character['level']}\n")
-    file.write(f"Strength: {character['strength']}\n")
-    file.write(f"Magic: {character['magic']}\n")
-    file.write(f"Health: {character['health']}\n")
-    file.write(f"Gold: {character['gold']}\n")
-    file.close()
-    return True
 
 
 # Load character from a text file
 def load_character(filename):
     """
     Loads character from file
-    Returns character dictionary or None if file doesn't exist
+    Returns character dictionary or None if file doesn't exist.
+    Uses try/except instead of os.path.exists for file existence check.
     """
-    import os
-    if not os.path.exists(filename):
+    try:
+        # Use 'with open' for reading
+        with open(filename, "r") as file:
+            lines = file.readlines()
+    except FileNotFoundError:
+        # If the file doesn't exist, return None
         return None
-
-    file = open(filename, "r")
-    lines = file.readlines()
-    file.close()
+    except IOError:
+        # Catch other file read errors (e.g., permissions)
+        return None
 
     data = {}
     for line in lines:
         if ":" in line:
+            # Use split with maxsplit=1 to handle potential colons in values (safer)
             key, value = line.strip().split(": ", 1)
             data[key] = value
 
+    # Note: Need to convert level, stats, and gold back to integers for the dictionary
     character = {
         "name": data.get("Character Name", ""),
         "class": data.get("Class", ""),
@@ -150,6 +162,7 @@ if __name__ == "__main__":
     display_character(char)
 
     print("\nSaving character...")
+    # This assumes 'aria.txt' can be created in the current directory
     save_character(char, "aria.txt")
 
     print("\nLoading character...")
