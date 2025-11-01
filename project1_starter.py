@@ -3,104 +3,94 @@ COMP 163 - Project 1: Character Creator & Saving/Loading
 Name: Joshua Evans
 Date: 10/31/2025
 
-AI Usage: AI helped with the development of the leveling system and the transformations for when characters reach level 100
-AI explained Functions and files to further help development
-AI used CHAT GPT and GOOGLE GEMINI
+AI Usage: ChatGPT helped with function and files logic, formatting, and level 100 transformations.
 """
 
-# Function to create a new character
+# Create a new character
 def create_character(name, character_class):
     """
-    Creates a new character dictionary with calculated stats
-    Returns: dictionary with keys: name, class, level, physical_damage, ki_damage, health, speed, gold
+    Creates a character dictionary with base stats
+    Keys: name, class, level, strength, magic, health, gold
     """
-    level = 1  # All new characters start at level 1
-
-    # Calculate base stats
-    physical_damage, ki_damage, health, speed = calculate_stats(character_class, level)
-
-    # Base gold for all characters
+    level = 1
+    strength, magic, health = calculate_stats(character_class, level)
     gold = 100
-
-    # Store all character data in a dictionary
+    
     character = {
         "name": name,
         "class": character_class,
         "level": level,
-        "physical_damage": physical_damage,
-        "ki_damage": ki_damage,
+        "strength": strength,
+        "magic": magic,
         "health": health,
-        "speed": speed,
-        "gold": gold,
-        "form": ""  # Will store transformations like Super Saiyan
+        "gold": gold
     }
-
     return character
 
 
-# Function to calculate stats based on class and level
+# Calculate stats based on class and level
 def calculate_stats(character_class, level):
     """
-    Calculates base stats based on class and level
-    Returns: tuple of (physical_damage, ki_damage, health, speed)
+    Returns a tuple (strength, magic, health) based on class and level
+    strength = physical damage
+    magic = ki damage
     """
-    if character_class.lower() == "earthling":
-        physical_damage = 50 + (level * 3)
-        ki_damage = 50 + (level * 3)
-        health = 100 + (level * 3)
-        speed = 100 + (level * 3)
-    elif character_class.lower() == "saiyan":
-        physical_damage = 75 + (level * 4)
-        ki_damage = 35 + (level * 2)
-        health = 80 + (level * 2)
-        speed = 150 + (level * 3)
-    elif character_class.lower() == "namekian":
-        physical_damage = 65 + (level * 2)
-        ki_damage = 45 + (level * 2)
-        health = 125 + (level * 4)
-        speed = 80 + (level * 2)
-    elif character_class.lower() == "frieza":
-        physical_damage = 45 + (level * 2)
-        ki_damage = 55 + (level * 2)
-        health = 70 + (level * 2)
-        speed = 100 + (level * 4)
+    cls = character_class.lower()
+    if cls == "earthling":
+        strength = 50 + level * 3
+        magic = 50 + level * 3
+        health = 100 + level * 3
+    elif cls == "saiyan":
+        strength = 75 + level * 4
+        magic = 35 + level * 2
+        health = 80 + level * 2
+    elif cls == "namekian":
+        strength = 65 + level * 2
+        magic = 45 + level * 2
+        health = 120 + level * 4
+    elif cls == "frieza":
+        strength = 45 + level * 2
+        magic = 55 + level * 2
+        health = 70 + level * 2
     else:
-        physical_damage = 10
-        ki_damage = 10
-        health = 100
-        speed = 50
+        # Default fallback for unknown class
+        strength = 10 + level * 2
+        magic = 10 + level * 2
+        health = 100 + level * 3
+    return (strength, magic, health)
 
-    return (physical_damage, ki_damage, health, speed)
 
-
-# Function to save a character to a text file
+# Save character to a text file
 def save_character(character, filename):
     """
-    Saves character to text file in specific format
-    Returns: True if successful, False if error occurred
+    Saves character to file in proper format.
+    Returns True if successful, False if file path invalid.
     """
     if filename == "":
+        return False
+
+    import os
+    directory = os.path.dirname(filename)
+    if directory != "" and not os.path.exists(directory):
         return False
 
     file = open(filename, "w")
     file.write(f"Character Name: {character['name']}\n")
     file.write(f"Class: {character['class']}\n")
     file.write(f"Level: {character['level']}\n")
-    file.write(f"Physical Damage: {character['physical_damage']}\n")
-    file.write(f"Ki Damage: {character['ki_damage']}\n")
+    file.write(f"Strength: {character['strength']}\n")
+    file.write(f"Magic: {character['magic']}\n")
     file.write(f"Health: {character['health']}\n")
-    file.write(f"Speed: {character['speed']}\n")
     file.write(f"Gold: {character['gold']}\n")
-    file.write(f"Form: {character['form']}\n")
     file.close()
     return True
 
 
-# Function to load a character from a text file
+# Load character from a text file
 def load_character(filename):
     """
-    Loads character from text file
-    Returns: character dictionary if successful, None if file not found
+    Loads character from file
+    Returns character dictionary or None if file doesn't exist
     """
     import os
     if not os.path.exists(filename):
@@ -112,7 +102,7 @@ def load_character(filename):
 
     data = {}
     for line in lines:
-        if ": " in line:
+        if ":" in line:
             key, value = line.strip().split(": ", 1)
             data[key] = value
 
@@ -120,73 +110,67 @@ def load_character(filename):
         "name": data.get("Character Name", ""),
         "class": data.get("Class", ""),
         "level": int(data.get("Level", 1)),
-        "physical_damage": int(data.get("Physical Damage", 0)),
-        "ki_damage": int(data.get("Ki Damage", 0)),
+        "strength": int(data.get("Strength", 0)),
+        "magic": int(data.get("Magic", 0)),
         "health": int(data.get("Health", 0)),
-        "speed": int(data.get("Speed", 0)),
-        "gold": int(data.get("Gold", 0)),
-        "form": data.get("Form", "")
+        "gold": int(data.get("Gold", 0))
     }
-
     return character
 
 
-# Function to display a character sheet
+# Display character sheet
 def display_character(character):
     print("=== CHARACTER SHEET ===")
     print(f"Name: {character['name']}")
     print(f"Class: {character['class']}")
     print(f"Level: {character['level']}")
-    print(f"Physical Damage: {character['physical_damage']}")
-    print(f"Ki Damage: {character['ki_damage']}")
+    print(f"Strength: {character['strength']}")
+    print(f"Magic: {character['magic']}")
     print(f"Health: {character['health']}")
-    print(f"Speed: {character['speed']}")
     print(f"Gold: {character['gold']}")
-    if character["form"] != "":
-        print(f"Form: {character['form']}")
 
 
-# Function to level up a character and recalculate stats
+# Level up a character
 def level_up(character):
+    """
+    Increase level by 1, recalc stats, unlock special forms at level 100
+    """
     character["level"] += 1
-    pd, kd, hp, spd = calculate_stats(character["class"], character["level"])
-    character["physical_damage"] = pd
-    character["ki_damage"] = kd
-    character["health"] = hp
-    character["speed"] = spd
+    character["strength"], character["magic"], character["health"] = calculate_stats(
+        character["class"], character["level"]
+    )
 
-    # Unlock ultimate forms at level 100
     if character["level"] == 100:
-        if character["class"].lower() == "saiyan":
-            character["form"] = "Super Saiyan"
-            boost_stats(character, 1.5)
-        elif character["class"].lower() == "frieza":
-            character["form"] = "Final Form"
-            boost_stats(character, 1.6)
-        elif character["class"].lower() == "earthling":
-            character["form"] = "Ultimate Mode"
-            boost_stats(character, 1.4)
-        elif character["class"].lower() == "namekian":
-            character["form"] = "Power Awakening"
-            boost_stats(character, 1.45)
+        cls = character["class"].lower()
+        if cls == "saiyan":
+            print(f"🔥 {character['name']} has transformed into Super Saiyan!")
+            character["strength"] = int(character["strength"] * 1.5)
+            character["magic"] = int(character["magic"] * 1.5)
+            character["health"] = int(character["health"] * 1.5)
+        elif cls == "frieza":
+            print(f"❄️ {character['name']} has reached Final Form!")
+            character["strength"] = int(character["strength"] * 1.6)
+            character["magic"] = int(character["magic"] * 1.6)
+            character["health"] = int(character["health"] * 1.6)
+        elif cls == "earthling":
+            print(f"💪 {character['name']} has unlocked Ultimate Mode!")
+            character["strength"] = int(character["strength"] * 1.4)
+            character["magic"] = int(character["magic"] * 1.4)
+            character["health"] = int(character["health"] * 1.4)
+        elif cls == "namekian":
+            print(f"🌿 {character['name']} has achieved Power Awakening!")
+            character["strength"] = int(character["strength"] * 1.45)
+            character["magic"] = int(character["magic"] * 1.45)
+            character["health"] = int(character["health"] * 1.45)
 
 
-# Helper function to boost stats for transformations
-def boost_stats(character, multiplier):
-    character["physical_damage"] = int(character["physical_damage"] * multiplier)
-    character["ki_damage"] = int(character["ki_damage"] * multiplier)
-    character["health"] = int(character["health"] * multiplier)
-    character["speed"] = int(character["speed"] * multiplier)
-
-
-# Main program for testing
+# Main testing block
 if __name__ == "__main__":
     print("=== CHARACTER CREATOR ===")
-
     char = create_character("Goku", "Saiyan")
     display_character(char)
 
-    print("\nLeveling up to 100...")
+    print("\nLeveling up character...")
     for _ in range(99):
         level_up(char)
     display_character(char)
@@ -195,5 +179,5 @@ if __name__ == "__main__":
     save_character(char, "goku.txt")
 
     print("\nLoading character...")
-    loaded_char = load_character("goku.txt")
-    display_character(loaded_char)
+    loaded = load_character("goku.txt")
+    display_character(loaded)
